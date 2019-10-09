@@ -21,13 +21,13 @@ public class QQChat extends JFrame implements ActionListener{
 	JTextField jtf;
 	JButton jb;
 	JPanel jp;
-	String ownerId, friend;
+	String ownerId, friend,sencry;
 	
 	//测试代码
-	public static void main(String[] args) {
-	//	QQChat qq = new QQChat("1","1");
-
-	}
+//	public static void main(String[] args) {
+//		QQChat qq = new QQChat("1","1");
+//
+//	}
 	public QQChat(String ownerId, String friend){
 		this.ownerId = ownerId;
 		this.friend = friend;
@@ -53,7 +53,12 @@ public class QQChat extends JFrame implements ActionListener{
 	
 	//显示消息
 	public void showMessage(Message ms){
-		String info = ms.getSender()+"对"+ms.getGetter()+"说:"+ms.getCon()+"\r\n";
+System.out.println("读取从服务器发来的消息"+ms.getSender()+"给"+ms.getGetter()+"说："+ms.getCon());
+		//解密
+		QQEncryption qqe = new QQEncryption();
+		String plaintext= qqe.DESDecryption(ms.getCon());
+		
+		String info = ms.getSender()+"对"+ms.getGetter()+"说:"+plaintext+"\r\n";
 		this.jta.append(info);
 	}
 	
@@ -63,13 +68,20 @@ public class QQChat extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		if(e.getSource() == jb){
 			//点击了发送按钮
+			
+			
+			//进行加密操作
+			QQEncryption qqe = new QQEncryption();
+			sencry = qqe.DESEncryption(jtf.getText());
+			
 			Message ms = new Message();
 			ms.setMesType(MessageType.message_common_message);
 			ms.setSender(this.ownerId);
 			ms.setGetter(this.friend);
-			ms.setCon(jtf.getText());
+			ms.setCon(sencry);
 			ms.setSendTime(new java.util.Date().toString());//传入当前时间
 			
+			jtf.setText("");//处理发送数据后的框,使其为空。
 			//发送，要拿到socket
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(ManageClientConServerThread.getManageClientThread(this.ownerId).getS().getOutputStream());

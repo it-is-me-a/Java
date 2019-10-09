@@ -9,4 +9,6 @@ public interface MessageType {
 	String message_common_message = "3";//普通数据包
 	String message_get_OnlineFriend = "4";//请求在线好友
 	String message_receive_OnlineFriend = "5";//返回在线好友
+	String message_receive_QQNumNoExist = "6";//注册QQ号码成功
+	String message_receive_QQNumYesExist = "7";//注册QQ号码失败
 }

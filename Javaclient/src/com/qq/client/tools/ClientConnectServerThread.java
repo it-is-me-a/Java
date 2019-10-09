@@ -6,6 +6,7 @@ package com.qq.client.tools;
 import java.net.*;
 import java.io.*;
 
+import com.qq.client.model.QQEncryption;
 import com.qq.client.view.QQChat;
 import com.qq.client.view.QQFriendList;
 import com.qq.common.Message;
@@ -30,9 +31,10 @@ public class ClientConnectServerThread extends Thread{
 			try {
 				ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
 				Message ms = (Message)ois.readObject();
-				System.out.println("读取从服务器发来的消息"+ms.getSender()+"给"+ms.getGetter()+"说："+ms.getCon());
 				
 				if(ms.getMesType().equals(MessageType.message_common_message)){
+
+					
 					//把从服务器获得的消息显示到对应的聊天对话框
 					QQChat qqchat = ManageQQChat.getManageQQChat(ms.getGetter()+" "+ms.getSender());
 					qqchat.showMessage(ms);
@@ -61,4 +63,4 @@ public class ClientConnectServerThread extends Thread{
 		}
 	}
 	
-}
+}//

@@ -20,8 +20,10 @@ public class QQClientLogin extends JFrame implements ActionListener{
 	//定义最上面的组件
 	JLabel jl1;
 	
-	//定义中间的组件，中部有四个JPanel，由选项卡窗口管理JTabbedPane
+	
+	//由选项卡窗口管理JTabbedPane
 	JTabbedPane jtp;
+	//定义中间的组件，中部有四个JPanel
 	JPanel jp2, jp3, jp4,jp5,jp6,jp7;
 	JLabel jp3_jl1,jp3_jl2, jp4_j11,jp4_j12;
 	JButton jp5_jbt, jp6_jbt;
@@ -98,6 +100,7 @@ public class QQClientLogin extends JFrame implements ActionListener{
 		//处理最下面
 		jp1 = new JPanel();
 		jp1_jb1 = new JButton("注册账号");
+		jp1_jb1.addActionListener(this);
 		jp1.add(jp1_jb1,"LEFT");
 				
 		
@@ -114,10 +117,12 @@ public class QQClientLogin extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		//如果用户点击登录，判断
+		
+		//如果用户点击登录
 		if(e.getSource()== jp6_jbt){
 			QQClientUser qqClientUser = new QQClientUser();
 			User u = new User();
+			u.setIfNew(2);//已存在用户
 			u.setUserId(jp3_jtf.getText().trim());//密码与账号的处理方式不一样
 			u.setPasswd(new String(jp4_jpf.getPassword()));
 			
@@ -149,6 +154,11 @@ public class QQClientLogin extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(this, "用户名密码错误");
 			}
 			
+		}
+		else if(e.getSource()== jp1_jb1){//注册界面			
+			QQClientRegister qqcr = new QQClientRegister();
+			//同时关闭掉登录界面
+			this.dispose();
 		}
 		
 	}

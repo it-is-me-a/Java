@@ -60,5 +60,45 @@ public class MyQQClient implements java.io.Serializable{
 	public void SendInfoToServer(Object o){
 		
 	}
+	
+	/*
+	 * 检查QQ号是否应经存在,已存在返回false，否则返回true
+	 */
+	public boolean SendQQnumberToServer(User u){
+		boolean b = false;
+		try {
+			s = new Socket("127.0.0.1",8080);			
+			//发送数据
+			ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+			oos.writeObject(u);
+			
+			//接收数据
+			ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+			Message ms = (Message)ois.readObject();
+			
+			if(ms.getMesType().equals("7")){
+				//注册失败
+				b = false;			
+			}else if(ms.getMesType().equals("6")){
+				//注册成功
+				b = true;
+			}else{
+				s.close();
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			// TODO Auto-generated catch block
+			try {
+				s.close();//我的意思是注册完就结束掉链接，然后开启登录界面开始新的连接。
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return b;
+	}
 
 }

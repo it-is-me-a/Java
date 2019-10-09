@@ -13,4 +13,11 @@ public class QQClientUser {
 	public boolean checkUser(User u){
 		return new MyQQClient().sendLoginInfoToServer(u);
 	}
+	
+	/*
+	 * 检查QQ号是否应经存在,已存在返回false，否则返回true
+	 */
+	public boolean checkQQnumberIfExist(User u){
+		return new MyQQClient().SendQQnumberToServer(u);
+	}
 }
